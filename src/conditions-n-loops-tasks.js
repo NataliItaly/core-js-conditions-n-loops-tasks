@@ -382,8 +382,38 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  const arrToSort = [];
+  for (let i = 0; i < arr.length; i += 1) {
+    arrToSort[i] = arr[i];
+  }
+  function swap(i, j) {
+    const temp = arrToSort[i];
+    arrToSort[i] = arrToSort[j];
+    arrToSort[j] = temp;
+  }
+  function partition(low, high) {
+    const pivot = arrToSort[high];
+    let i = low;
+    for (let j = low; j < high; j += 1) {
+      if (arrToSort[j] < pivot) {
+        swap(i, j);
+        i += 1;
+      }
+    }
+    swap(i, high);
+    return i;
+  }
+  function sort(low, high) {
+    if (low < high) {
+      const pivotIndex = partition(low, high);
+      sort(low, pivotIndex - 1);
+      sort(pivotIndex + 1, high);
+    }
+  }
+
+  sort(0, arrToSort.length - 1);
+  return arrToSort;
 }
 
 /**
@@ -396,12 +426,14 @@ function sortByAsc(/* arr */) {
  * @return {string} The shuffled string.
  *
  * @example:
- *  '012345', 1 => '024135'
+ *  '01234567', 1 => '02461357'
  *  'qwerty', 1 => 'qetwry'
- *  '012345', 2 => '024135' => '043215'
+ *  '012345', 2 => '02461357' => '04152637'
  *  'qwerty', 2 => 'qetwry' => 'qtrewy'
- *  '012345', 3 => '024135' => '043215' => '031425'
+ *  '012345', 3 => '02413557' => '04152637' => '01234567'
+ *  '012345', 4 => '024135' => '043215' => '031425' => '012345'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
+ *  '01234', 4 => '02413'
  */
 function shuffleChar(/* str, iterations */) {
   throw new Error('Not implemented');
@@ -425,8 +457,40 @@ function shuffleChar(/* str, iterations */) {
  * 321321   => 322113
  *
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const digits = [];
+  let n = number;
+  while (n > 0) {
+    digits.push(n % 10);
+    n = Math.floor(n / 10);
+  }
+  digits.reverse();
+
+  let i = digits.length - 2;
+  while (i >= 0 && digits[i] >= digits[i + 1]) {
+    i -= 1;
+  }
+  if (i < 0) {
+    return number;
+  }
+  let j = digits.length - 1;
+  while (digits[j] <= digits[i]) {
+    j -= 1;
+  }
+  [digits[i], digits[j]] = [digits[j], digits[i]];
+
+  let left = i + 1;
+  let right = digits.length - 1;
+  while (left < right) {
+    [digits[left], digits[right]] = [digits[right], digits[left]];
+    left += 1;
+    right -= 1;
+  }
+  let res = 0;
+  for (let k = 0; k < digits.length; k += 1) {
+    res = res * 10 + digits[k];
+  }
+  return res;
 }
 
 module.exports = {

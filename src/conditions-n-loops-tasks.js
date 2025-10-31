@@ -345,8 +345,57 @@ function getBalanceIndex(arr) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const matrix = [];
+  for (let i = 0; i < size; i += 1) {
+    matrix[i] = [];
+    for (let j = 0; j < size; j += 1) {
+      matrix[i][j] = 0;
+    }
+  }
+  let currentNum = 1;
+  let startIndex = 0;
+  let endIndex = size - 1;
+
+  function fillUp() {
+    if (startIndex === endIndex) {
+      matrix[startIndex][startIndex] = currentNum;
+    }
+    for (let i = startIndex; i < endIndex; i += 1) {
+      matrix[startIndex][i] = currentNum;
+
+      currentNum += 1;
+    }
+  }
+  function fillRight() {
+    for (let i = startIndex; i < endIndex; i += 1) {
+      matrix[i][endIndex] = currentNum;
+      currentNum += 1;
+    }
+  }
+  function fillBottom() {
+    for (let i = endIndex; i > startIndex; i -= 1) {
+      matrix[endIndex][i] = currentNum;
+      currentNum += 1;
+    }
+  }
+  function fillLeft() {
+    for (let i = endIndex; i > startIndex; i -= 1) {
+      matrix[i][startIndex] = currentNum;
+      currentNum += 1;
+    }
+  }
+
+  while (startIndex <= endIndex) {
+    fillUp();
+    fillRight();
+    fillBottom();
+    fillLeft();
+    startIndex += 1;
+    endIndex -= 1;
+  }
+
+  return matrix;
 }
 
 /**
@@ -382,8 +431,9 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(arr) {
-  const arrToSort = [];
+function sortByAsc(/* arr */) {
+  throw new Error('Not implemented');
+  /* const arrToSort = [];
   for (let i = 0; i < arr.length; i += 1) {
     arrToSort[i] = arr[i];
   }
@@ -413,7 +463,7 @@ function sortByAsc(arr) {
   }
 
   sort(0, arrToSort.length - 1);
-  return arrToSort;
+  return arrToSort; */
 }
 
 /**

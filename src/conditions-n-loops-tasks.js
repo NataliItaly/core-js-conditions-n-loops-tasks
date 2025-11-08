@@ -498,8 +498,54 @@ function sortByAsc(arr) {
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  *  '01234', 4 => '02413'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  const n = str.length;
+  if (n <= 1 || iterations === 0) return str;
+
+  const perm = new Array(n);
+  let evenPos = 0;
+  let oddPos = Math.ceil(n / 2);
+  for (let i = 0; i < n; i += 1) {
+    if (i % 2 === 0) {
+      perm[evenPos] = i;
+      evenPos += 1;
+    } else {
+      perm[oddPos] = i;
+      oddPos += 1;
+    }
+  }
+
+  function powPerm(p, k) {
+    let kCopy = k;
+    let res = new Array(n);
+    let base = new Array(n);
+
+    for (let i = 0; i < n; i += 1) {
+      res[i] = i;
+      base[i] = p[i];
+    }
+
+    function applyPerm(a, b) {
+      const r = new Array(n);
+      for (let i = 0; i < n; i += 1) r[i] = b[a[i]];
+      return r;
+    }
+
+    while (kCopy > 0) {
+      if (kCopy % 2 === 1) res = applyPerm(res, base);
+      base = applyPerm(base, base);
+      kCopy = Math.floor(kCopy / 2);
+    }
+    return res;
+  }
+
+  const finalPerm = powPerm(perm, iterations);
+
+  let res = '';
+  for (let i = 0; i < n; i += 1) {
+    res += str[finalPerm[i]];
+  }
+  return res;
 }
 
 /**
